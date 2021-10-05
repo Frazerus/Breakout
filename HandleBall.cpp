@@ -74,6 +74,10 @@ void HandleBall::ChangeDirection(Entity &ball, Entity &collided){
 
     Vector2f diff = bpos - cpos;
     std::cout<< diff.x << " " << diff.y;
+    auto vel = ball.GetComponent<CBody>().GetLinearVelocity();
+
+    collided.GetComponent<C
+    
 }
 
 bool HandleBall::OnCollision(Entity &entityA, Entity &entityB){
