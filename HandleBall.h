@@ -22,7 +22,6 @@ class HandleBall
     virtual void OnStartup() override;
     virtual void OnShutdown() override;
 
-    void SpawnBall();
     
     static const astu:: EntityFamily FAMILY;
 };

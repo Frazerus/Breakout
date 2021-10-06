@@ -11,7 +11,7 @@
 #include "MainService.h"
 #include "HandleBall.h"
 #include "HandleBlock.h"
-#include "BlockCreator.h"
+#include "EntityPrototypeService.h"
 #include "cBall.h"
 
 
@@ -46,14 +46,16 @@ int main()
     ASTU_CREATE_AND_ADD_SERVICE(SceneSystem);
 	ASTU_CREATE_AND_ADD_SERVICE(Box2DPhysicsSystem);
 	ASTU_CREATE_AND_ADD_SERVICE(CollisionSignalService);
+    ASTU_CREATE_AND_ADD_SERVICE(EntityFactoryService);
 
 
 
     // Let's add our main service that runs the application.
+    ASTU_CREATE_AND_ADD_SERVICE(EntityPrototypeService);
     ASTU_CREATE_AND_ADD_SERVICE(MainService);
     ASTU_CREATE_AND_ADD_SERVICE(HandleBall);
     ASTU_CREATE_AND_ADD_SERVICE(HandleBlock);
-    ASTU_CREATE_AND_ADD_SERVICE(BlockCreator);
+
     
     ASTU_SERVICE(PhysicsSystem).SetGravityVector(0.0f,0.0f);
 

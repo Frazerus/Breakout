@@ -3,7 +3,8 @@
 #define WORLD_HEIGHT                    200.0f
 #define WORLD_WIDTH                     400.0f
 #define GRAVITY                         Vector2f(0.0f,10.0f)
-
+#define BOUNDARY_THICKNESS              4.0f
+#define BOUNDARY_COLOR                  RalColors::PearlBlackBerry
 
 
 #define BLOCKS_PER_ROW                  20

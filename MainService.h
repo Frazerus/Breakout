@@ -10,6 +10,7 @@
 class MainService 
     : public astu::BaseService
 	, private astu2d::CameraClient
+	, private astu::EntityFactoryClient
     ,private astu::SignalEmitter<GameEvent>
     ,private astu::SignalListener<GameEvent>
 {

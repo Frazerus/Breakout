@@ -31,6 +31,8 @@ void MainService::OnStartup()
     GetCamera().ShowFitting(WORLD_WIDTH,WORLD_HEIGHT);
 
     numLifes = 3;
+    AddEntity("Ball",Vector2f(0,10));
+    AddEntity("Block",Vector2f(0,-50));
 
 
     

@@ -11,5 +11,6 @@ file(GLOB SOURCES "*.cpp")
 add_executable(Breakout ${SOURCES})
 target_link_libraries(Breakout astu)
 
+
 # specify required libraries
 target_link_libraries(Breakout astu astu_box2d)
