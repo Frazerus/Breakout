@@ -55,6 +55,7 @@ int main()
     ASTU_CREATE_AND_ADD_SERVICE(HandleBlock);
     ASTU_CREATE_AND_ADD_SERVICE(BlockCreator);
     
+    ASTU_SERVICE(PhysicsSystem).SetGravityVector(0.0f,0.0f);
 
 
 

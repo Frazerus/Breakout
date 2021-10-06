@@ -34,9 +34,10 @@ void HandleBlock::OnShutdown() {
 }
 
 void HandleBlock::DestroyBlock(Entity &entity){
-    GetEntityService().RemoveEntity(entity);
 
     EmitSignal(GameEvent(GameEvent::Type::BlockDestroyed));
+    
+    GetEntityService().RemoveEntity(entity);
 
 }
 

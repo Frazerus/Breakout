@@ -15,11 +15,8 @@ using namespace astu;
 using namespace std;
 
 
-const astu::EntityFamily HandleBall::FAMILY = EntityFamily::Create<cBall, CPose, CBody>();
-
 HandleBall::HandleBall(int updatePriority)
     :BaseService("Ball HandlerService")
-    ,IteratingEntitySystem(FAMILY, updatePriority)
 {
 
 }
@@ -36,7 +33,7 @@ void HandleBall::SpawnBall(){
     auto entity = make_shared<Entity>();
     entity->AddComponent(make_shared<cBall>(BALL_MAXIMUM_SPEED));
 
-    entity->AddComponent(make_shared<CPose>(0.0f,100.0f));
+    entity->AddComponent(make_shared<CPose>(0.0f,50.0f));
 
     entity->AddComponent(make_shared<CScene>(PolylineBuilder()
         .Color(BALL_COLOR)
@@ -47,8 +44,8 @@ void HandleBall::SpawnBall(){
 
     entity->AddComponent(CBodyBuilder()
         .Type(CBody::Type::Dynamic)
-        .LinearDamping(0)
-        .AngularDamping(0)
+        .LinearDamping(BALL_DAMPENING)
+        .LinearVelocity(0.0f,-BALL_INITSPEED)
         .Build()
         );
     entity->AddComponent(CCircleColliderBuilder()
@@ -61,6 +58,7 @@ void HandleBall::SpawnBall(){
     ASTU_SERVICE(EntityService).AddEntity(entity);
 }
 
+<<<<<<< Updated upstream
     void HandleBall::ProcessEntity(Entity &entity){
     auto& body = entity.GetComponent<CBody>();
     body.SetLinearVelocity(0,-25);
@@ -94,4 +92,6 @@ bool HandleBall::OnCollision(Entity &entityA, Entity &entityB){
 }
 
 //TODO: CREATE COLLISION STUFF BECAUSE CURRENTLY ITS NOT WORKING
+=======
+>>>>>>> Stashed changes
 
