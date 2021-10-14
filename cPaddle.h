@@ -6,19 +6,14 @@ using namespace astu;
 
 class cPaddle : public astu::EntityComponent {
     public: 
+        float currVel;
 
-        float height;
+        bool control;
 
-        float speed;
+        float controlMult = 1;
 
-        Vector2f position;
 
-        
-
-        cPaddle(float speed, float height, Vector2f position)
-            :speed(speed)
-            ,height(height)
-            ,position(position)
+        cPaddle()
             {
 
             }

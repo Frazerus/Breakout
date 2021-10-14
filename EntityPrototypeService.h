@@ -18,7 +18,7 @@ class EntityPrototypeService : public astu::BaseService
 public:
 
 	  // Constructor.
-	  EntityPrototypeService(bool debug = false);
+	  EntityPrototypeService(bool debug = true);
 
 private:
 	  // Whether debug mode is activated.
@@ -30,7 +30,7 @@ private:
 
 	  using Vertices = std::vector<astu::Vector2f>;
 
-	  std::shared_ptr<astu::Entity> CreateBoundary(float w, float h);
+	  std::shared_ptr<astu::Entity> CreateBoundary(float w, float h, bool kill);
 	  std::shared_ptr<astu::Entity> createBall();
 	  std::shared_ptr<astu::Entity> createBlock();
 	  std::shared_ptr<astu::Entity> createPaddle();

@@ -8,14 +8,21 @@ class GameEvent {
     enum class Type {
         BallOut,
         AllBlocksDestroyed,
-        BlockDestroyed
+        BlockDestroyed,
+        BlocksCreated
     };
 
     Type type;
 
     int intValue;
 
-    GameEvent(Type t): type(t){
+    GameEvent(Type t): type(t), intValue(0)
+    {
+       
+    }
+
+    GameEvent(Type t, int val): type(t), intValue(val)
+    {
 
     }
 

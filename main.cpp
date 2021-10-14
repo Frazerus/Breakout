@@ -9,8 +9,9 @@
 
 // Local includes
 #include "MainService.h"
-#include "HandleBall.h"
 #include "HandleBlock.h"
+#include "HandlePaddle.h"
+#include "HandleBall.h"
 #include "EntityPrototypeService.h"
 #include "cBall.h"
 
@@ -55,11 +56,15 @@ int main()
     ASTU_CREATE_AND_ADD_SERVICE(MainService);
     ASTU_CREATE_AND_ADD_SERVICE(HandleBall);
     ASTU_CREATE_AND_ADD_SERVICE(HandleBlock);
+    ASTU_CREATE_AND_ADD_SERVICE(HandlePaddle);
 
     
     ASTU_SERVICE(PhysicsSystem).SetGravityVector(0.0f,0.0f);
 
-
+    auto& ims = ASTU_SERVICE(InputMappingService);
+    ims.AddAxisMapping("Move", Keys::Left, -1.0f);
+	ims.AddAxisMapping("Move", Keys::Right, 1.0f);
+    ims.AddActionMapping("Respawn", Keys::SpaceBar);
 
     app.SetApplicationName("Breakout-Clone");
     app.SetVersionString("1.0.0");

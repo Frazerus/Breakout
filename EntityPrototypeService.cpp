@@ -9,6 +9,10 @@
 #include "Constants.h"
 #include "cBall.h"
 #include "cBlock.h"
+#include "cPaddle.h"
+#include "cDeath.h"
+#include "cBound.h"
+
 
 // AST-Utilities includes
 #include <AstuSuite2D.h>
@@ -31,8 +35,9 @@ void EntityPrototypeService::OnStartup()
 	auto &entityFactory = ASTU_SERVICE(EntityFactoryService);
 
 	// Register boundary entity prototypes.
-	entityFactory.RegisterPrototype("HBoundary", CreateBoundary(WORLD_WIDTH, BOUNDARY_THICKNESS));
-	entityFactory.RegisterPrototype("VBoundary", CreateBoundary(BOUNDARY_THICKNESS, WORLD_HEIGHT));
+	entityFactory.RegisterPrototype("HBoundary", CreateBoundary(WORLD_WIDTH, BOUNDARY_THICKNESS, false));
+	entityFactory.RegisterPrototype("VBoundary", CreateBoundary(WORLD_WIDTH, WORLD_HEIGHT, false));
+    entityFactory.RegisterPrototype("DBoundary", CreateBoundary(WORLD_WIDTH,BOUNDARY_THICKNESS, true));
 
 	// Register entity prototypes.
 	entityFactory.RegisterPrototype("Ball", createBall());
@@ -46,17 +51,19 @@ void EntityPrototypeService::OnShutdown()
 	  ASTU_SERVICE(EntityFactoryService).DeregisterAllPrototypes();
 }
 
-shared_ptr<Entity> EntityPrototypeService::CreateBoundary(float w, float h)
+shared_ptr<Entity> EntityPrototypeService::CreateBoundary(float w, float h, bool kill)
 {
 	  auto entity = make_shared<Entity>();
 	  entity->AddComponent(make_shared<CPose>());
 
-	  if (debug) {
-	      entity->AddComponent(make_shared<CScene>(PolylineBuilder()
-	          .Color(BOUNDARY_COLOR)
-	          .VertexBuffer(ShapeGenerator().PolylineMode().GenRectangle(w, h))
-	          .Build()));
-	  }
+      entity->AddComponent(make_shared<cBound>());
+
+
+	entity->AddComponent(make_shared<CScene>(PolylineBuilder()
+	    .Color(BOUNDARY_COLOR)
+	    .VertexBuffer(ShapeGenerator().PolylineMode().GenRectangle(w, h))
+	    .Build())
+        );
 
 	  entity->AddComponent(CBodyBuilder()
 	      .Type(CBody::Type::Static)
@@ -67,8 +74,11 @@ shared_ptr<Entity> EntityPrototypeService::CreateBoundary(float w, float h)
 	      .Friction(0)
 	      .Restitution(1)
 		  .CategoryBits(BOUNDARY_CATEGORY)
-		  .MaskBits(0xFFFF)
 	      .Build());
+    if(kill){
+        entity->AddComponent(make_shared<cDeath>());
+    }
+    
 
 	  return entity;
 }
@@ -96,6 +106,7 @@ shared_ptr<Entity> EntityPrototypeService::createBlock(){
         .MakeRectangle(BLOCK_X, BLOCK_Y)
         .Friction(0)
         .CategoryBits(BLOCKS_CATEGORY)
+        .MaskBits(BOUNDARY_CATEGORY | PADDLE_CATEGORY)
         .Build()
         );
 
@@ -106,9 +117,9 @@ shared_ptr<Entity> EntityPrototypeService::createBall(){
 
     auto entity = make_shared<Entity>();
 
-    entity->AddComponent(make_shared<cBall>(BALL_MAXIMUM_SPEED));
+    entity->AddComponent(make_shared<cBall>());
 
-    entity->AddComponent(make_shared<CPose>(0.0f,50.0f));
+    entity->AddComponent(make_shared<CPose>(BALL_INIT_POS));
 
     entity->AddComponent(make_shared<CScene>(PolylineBuilder()
         .Color(BALL_COLOR)
@@ -120,7 +131,7 @@ shared_ptr<Entity> EntityPrototypeService::createBall(){
     entity->AddComponent(CBodyBuilder()
         .Type(CBody::Type::Dynamic)
         .LinearDamping(BALL_DAMPENING)
-        .LinearVelocity(0.0f,-BALL_INITSPEED)
+        .LinearVelocity(0.0f,BALL_INITSPEED)
         .Build()
         );
 
@@ -138,7 +149,31 @@ shared_ptr<Entity> EntityPrototypeService::createBall(){
 
 shared_ptr<Entity> EntityPrototypeService::createPaddle(){
 
+    shared_ptr<VertexBuffer2f> rect = ShapeGenerator().GenRectangleVb(PADDLE_X,PADDLE_Y);
+
 	auto entity = make_shared<Entity>();
+
+    entity->AddComponent(make_shared<cPaddle>());
+
+    entity->AddComponent(make_shared<CPose>(0.0f,PADDLE_START_Y));
+
+    entity->AddComponent(make_shared<CScene>(PolylineBuilder()
+    .Color(PADDLE_COLOR)
+    .VertexBuffer(rect)
+    .Build())
+    );
+
+    entity->AddComponent(CBodyBuilder()
+    .Type(CBody::Type::Kinematic)
+    .Build()
+    );
+
+    entity->AddComponent(CPolygonColliderBuilder()
+    .MakeRectangle(PADDLE_X, PADDLE_Y)
+    .Friction(0)
+    .CategoryBits(PADDLE_CATEGORY)
+    .Build()
+    );
 
 	return entity;
 }

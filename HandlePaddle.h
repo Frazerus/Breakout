@@ -1,39 +1,39 @@
 #pragma once
 
 #include "constants.h"
-#include "cBlock.h"
-#include "GameEvent.h"
+#include "cPaddle.h"
 
 #include <AstuServices.h>
 #include <AstuSuite2D.h>
 #include <AstuECS.h>
 
 
-class HandleBlock
+class HandlePaddle
     :public astu::BaseService
-    ,private astu::EntityListener
-    ,private astu::OneFamilyEntitySystem
+    ,private astu::IteratingEntitySystem
     ,private astu2d::CollisionListener
-    ,private astu::SignalEmitter<GameEvent>
-    ,private astu::EntityFactoryClient
 
 {
     public:
-     HandleBlock();
+     HandlePaddle(int updatePriority = astu::Priority::Normal);
 
     private:
+    
+	static const astu::EntityFamily FAMILY;
+
+    
+	std::shared_ptr<astu::AxisBinding> moveAxis;
 
     // Inherited via BaseService
     virtual void OnStartup() override;
     virtual void OnShutdown() override;
 
+    void HandleBallColl(astu::Entity& Ball, astu::Entity& Paddle);
     
-    static const astu:: EntityFamily FAMILY;
+	virtual void ProcessEntity(astu::Entity& entity) override;
 
-    void DestroyBlock(astu::Entity &entity);
-
+    
     virtual bool OnCollision(astu::Entity& entityA, astu::Entity& entityB) override;
 
-    int createBlocks();
 
 };

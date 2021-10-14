@@ -29,6 +29,10 @@ private:
 
     void UpdateLife(int deltaLife = 0);
 
+    void UpdateNrBlocks(int nr);
+
+    void Win();
+
 
 
     // Inherited via BaseService
@@ -44,4 +48,6 @@ private:
      * @return the center of the screen in screen coordinates
      */
     astu::Vector2f GetCenter();
+
+    void PlaceBoundaries();
 };

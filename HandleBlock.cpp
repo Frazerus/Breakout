@@ -27,11 +27,24 @@ HandleBlock::HandleBlock()
 }
 
 void HandleBlock::OnStartup() {
+    EmitSignal(GameEvent(GameEvent::Type::BlocksCreated,createBlocks()));
 }
 
 void HandleBlock::OnShutdown() {
 
 }
+
+int HandleBlock::createBlocks(){
+    int count = 0;
+    for(float x = -WORLD_HALF_WIDTH+BLOCK_X/2; x <WORLD_HALF_WIDTH; x+=BLOCK_X+BLOCK_ROW_DIST ){
+        for(float y = FIRST_ROW_HEIGHT; y < LAST_ROW_HEIGHT; y+= BLOCK_Y+BLOCK_COL_DIST){
+            AddEntity("Block",x,y);
+            count++;
+        }
+    }
+    return count;
+}
+
 
 void HandleBlock::DestroyBlock(Entity &entity){
 

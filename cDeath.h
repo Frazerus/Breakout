@@ -3,20 +3,20 @@
 
 #include <AstuECS.h>
 
-class cBall : public astu::EntityComponent
+class cDeath : public astu::EntityComponent
      {
     public:
 
 
 
-    cBall()
+    cDeath()
     {
             //intentionally left empty
     }
 
 
     virtual std::shared_ptr<EntityComponent> Clone() override {
-        return std::make_shared<cBall>(*this);
+        return std::make_shared<cDeath>(*this);
     }
 
 };
